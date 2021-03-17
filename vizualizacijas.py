@@ -51,6 +51,7 @@ def izkliedes_grafiks(datne, x, y, saglabat=False):
 
 datne1 = 'dati/auto_simple.csv'
 datne2 = 'dati/auto_imports.csv'
+datne3 = 'dati/auto_imports_degviela.csv'
 
 karstuma_karte(datne2, True) # True saglabā failā
 # sadalijuma_grafiks(datne2, "price")
