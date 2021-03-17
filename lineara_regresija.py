@@ -3,7 +3,7 @@ import numpy as np  # darbs ar masīviem
 from termcolor import colored as cl # teksta izvade
 import matplotlib.pyplot as plt # vizualizācija
 import seaborn as sb # vizualizācija
-import pickle
+import pickle # Ļaus saglabāt mūsu modeli
 
 from sklearn.model_selection import train_test_split # data split
 
@@ -49,12 +49,12 @@ def parverst_kolonnu(df, kolonna):
 
 def modela_kvalitate(y_test, resultats):
     # Kvalitate virs 0.6 ir OK
-    print(cl('Explained Variance Score: {}'.format(evs(y_test, resultats)), attrs = ['bold']))
-    print(cl('R-Squared: {}'.format(r2(y_test, resultats)), attrs = ['bold']))
+    print(cl('Explained Variance Score (dispersija): {}'.format(evs(y_test, resultats)),'red', attrs = ['bold']))
+    print(cl('R-Squared (kvadrātiskā novirze): {}'.format(r2(y_test, resultats)),'red', attrs = ['bold']))
 
 
 def saglabat_modeli(datne, modelis):
-    with open(datne, 'wb') as f:
+    with open(datne, 'wb') as f: # Binary formāta fails
         s = pickle.dumps(modelis)
         f.write(s)
 
@@ -80,15 +80,15 @@ def prognozejam_rezultatu(modelis, dati):
 
 
 datne1 = 'dati/auto_simple.csv'
-kol_x1 = ['Volume','Weight']
-kol_y1 = 'CO2'
+kol_x1 = ['Volume','Weight'] # ņem par pamatu Volume un Weight
+kol_y1 = 'CO2' # Prognozē šo
 
 datne2 = 'dati/auto_imports.csv'
 kol_x2 = ['wheel-base','length','engine-size','city-mpg']
 kol_y2 = 'price'
 
 # Sagatavojam datus no datnes
-X_train, X_test, y_train, y_test = sagatavot_datus(datne1, kol_x1, kol_y1)
+X_train, X_test, y_train, y_test = sagatavot_datus(datne2, kol_x2, kol_y2)
 
 
 # vienkārša lineārā regresija
@@ -107,21 +107,21 @@ modelis = LinearRegression()
 
 modelis, rezultats = trenet_modeli(modelis, X_train, y_train, X_test)
 # # Ja gribam saglabāt modeli datnē
-# modelis, rezultats = trenet_modeli(modelis, X_train, y_train, X_test, "modelis.pickle")
+modelis, rezultats = trenet_modeli(modelis, X_train, y_train, X_test, "modelis.pickle")
 modela_kvalitate(y_test, rezultats)
 
 # Lietojam modeli, lai prognozetu rezultātu
-dati1 = [1500,1140]
-dati1_rez = 105
+dati1 = [1600,1523]
+dati1_rez = 109
 dati2 = [99.80,176.60,109,24]
 dati2_rez = 13950
 
-prognoze = prognozejam_rezultatu(modelis, [dati1])
-print(prognoze, dati1_rez)
+prognoze = prognozejam_rezultatu(modelis, [dati2])
+print(prognoze, dati2_rez)
 
-# print("Ielādējam modeli no datnes")
-# modelis2 = ieladet_modeli("modelis.pickle")
+print("Ielādējam modeli no datnes")
+modelis2 = ieladet_modeli("modelis.pickle")
 # rezultats2 = modelis2.predict(X_test)
 # modela_kvalitate(y_test, rezultats2)
-# prognoze = prognozejam_rezultatu(modelis2, [dati1])
-# print(prognoze, dati1_rez)
+prognoze = prognozejam_rezultatu(modelis2, [dati2])
+print(prognoze, dati2_rez)
