@@ -4,14 +4,14 @@ from bs4 import BeautifulSoup as bs
 URL = 'https://www.ss.lv/lv/transport/cars/today-5/sell'
 LAPAS = 'lapas/'
 
-rezultats = requests.get(URL)
-print(rezultats.status_code)
-print(rezultats.text)
+# rezultats = requests.get(URL)
+# print(rezultats.status_code)
+# print(rezultats.text)
 
 def saglaba(url,datne):
     rezultats = requests.get(url)
     if rezultats.status_code==200:
-        with open(datne,'w',encoding='UTF-8')as f:
+        with open(datne,'w',encoding='UTF-8') as f:
             f.write(rezultats.text)
 
 # saglaba(URL,LAPAS+"pirma_lapa.html")
@@ -33,12 +33,28 @@ def info(datne):
     #     print("**************************")
 
     auto_tabula = tabulas[2]
+    # print("!!!!!!!!!!!!!")
+    # print(auto_tabula)
+    # print("!!!!!!!!!!!")
 
     rindas = auto_tabula.find_all("tr")
 
     for rinda in rindas[1:]:
-        print(rinda)
-        print("**************************")
-        print("**************************")
+        lauki = rinda.find_all("td")
+        # for lauks in lauki:
+        #     print(lauks)
+        #     print("*********************")
+        auto = {}
+        auto["saite"] = lauki[1].find("a")["href"]
+        auto["bilde"] = lauki[1].find("img")["src"]
+        auto["apraksts"] = lauki[2].find("a").text.replace("\n"," ")
+        # apraksts = lauki[2].find("a").text.replace('\n','')
+        # print(apraksts)
+
+        marka = lauki[3].text
+        print(marka)
+
+        print(auto)
+        exit()
 
 info(LAPAS+"pirma_lapa.html")
