@@ -24,6 +24,21 @@ def info(datne):
 
     zupa = bs(html,"html.parser")
 
-    print(zupa)
+    galvena = zupa.find(id = 'page_main')
+
+    tabulas = galvena.find_all("table")
+
+    # for tabula in tabulas:
+    #     print(tabula)
+    #     print("**************************")
+
+    auto_tabula = tabulas[2]
+
+    rindas = auto_tabula.find_all("tr")
+
+    for rinda in rindas[1:]:
+        print(rinda)
+        print("**************************")
+        print("**************************")
 
 info(LAPAS+"pirma_lapa.html")
