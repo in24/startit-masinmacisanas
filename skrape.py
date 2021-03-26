@@ -22,6 +22,8 @@ def info(datne):
     with open (datne,'r',encoding="UTF-8") as f:
         html = f.read()
 
-    print(html)
+    zupa = bs(html,"html.parser")
+
+    print(zupa)
 
 info(LAPAS+"pirma_lapa.html")
