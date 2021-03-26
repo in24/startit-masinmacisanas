@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup as bs
 
 URL = 'https://www.ss.lv/lv/transport/cars/today-5/sell'
 LAPAS = 'lapas/'
@@ -14,3 +15,13 @@ def saglaba(url,datne):
             f.write(rezultats.text)
 
 # saglaba(URL,LAPAS+"pirma_lapa.html")
+
+def info(datne):
+    dati = []
+
+    with open (datne,'r',encoding="UTF-8") as f:
+        html = f.read()
+
+    print(html)
+
+info(LAPAS+"pirma_lapa.html")
